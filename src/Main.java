@@ -18,8 +18,8 @@ public class Main {
     public static void main(String[] args) {
         JFrame jframe=new JFrame();
         SceneController sceneController=SceneController.getInstance(); //取得單例模式的控場實體
-        sceneController.changeScene(new OpenScene()); //一開始使用開場畫面
-        GameKernel ggmeKernel = new GameKernel.Builder().input(  //創建遊戲核心
+//        sceneController.changeScene(new OpenScene()); //一開始使用開場畫面
+        GameKernel gameKernel = new GameKernel.Builder().input(  //創建遊戲核心
                 new CommandSolver.BuildStream().mouseTrack().subscribe(sceneController).keyboardTrack()
                         .add(KeyEvent.VK_ENTER,1) //設置ENTER按鍵為 1
                         .add(KeyEvent.VK_LEFT,2)//設置左箭頭為2
@@ -30,9 +30,9 @@ public class Main {
         jframe.setSize(800,600);
         jframe.setTitle("打飛機遊戲");
         jframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //設置關閉時結束程式
-        jframe.add(ggmeKernel);
+        jframe.add(gameKernel);
         jframe.setVisible(true);
 
-        ggmeKernel.run();
+        gameKernel.run();
     }
 }
