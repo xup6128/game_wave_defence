@@ -1,3 +1,5 @@
+package utils;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 //遊戲主核心，用來處理遊戲邏輯運算和繪圖

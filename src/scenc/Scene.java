@@ -1,3 +1,8 @@
+package scenc;
+
+import utils.CommandSolver;
+import utils.GameKernel;
+
 //場景抽象類-->
   //介面的實作推遲給子類場景實現
   //並增加兩個抽象方法給子類實現-->場景初始化和場景結束(釋放資源用)

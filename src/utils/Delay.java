@@ -1,3 +1,5 @@
+package utils;
+
 public class Delay {
     private int count; //計時器，計算當下經過的偵數
     private int countLimit;// 計數的上限(總共要記幾禎)

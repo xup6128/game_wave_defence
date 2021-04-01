@@ -1,3 +1,7 @@
+package scenc;
+
+import utils.CommandSolver;
+
 import java.awt.*;
 
 public class OpenScene extends Scene {

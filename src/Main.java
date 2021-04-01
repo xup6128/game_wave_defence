@@ -1,6 +1,10 @@
+import controllers.SceneController;
+import scenc.OpenScene;
+import utils.CommandSolver;
+import utils.GameKernel;
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
-import java.security.Key;
 
 public class Main {
     //遊戲建置步驟
