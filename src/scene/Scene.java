@@ -1,4 +1,4 @@
-package scenc;
+package scene;
 
 import utils.CommandSolver;
 import utils.GameKernel;

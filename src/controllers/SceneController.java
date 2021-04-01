@@ -1,6 +1,6 @@
 package controllers;
 
-import scenc.Scene;
+import scene.Scene;
 import utils.CommandSolver;
 import utils.GameKernel;
 

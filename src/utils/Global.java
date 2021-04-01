@@ -17,6 +17,15 @@ public class Global {
         public int getValue() {
             return value;
         }
+        
+        public static Direction getDirection(int value){
+            for(Direction d : Direction.values()){
+                if(d.getValue() == value){
+                    return d;
+                }
+            }
+            return null;
+        }
     }
 
     public static final boolean IS_DEBUG = true;
