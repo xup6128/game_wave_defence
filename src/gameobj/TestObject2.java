@@ -1,6 +1,6 @@
-package Gameobj;
+package gameobj;
 
-import controllers.ImgController;
+import controllers.ImageController;
 
 import java.awt.*;
 
@@ -11,19 +11,20 @@ public class TestObject2 extends GameObject {
 
     public TestObject2(int x, int y) {
         super(x, y, 44, 48);
-        this.img = ImgController.getImgController().tryGet("/p2.png");
+        this.img = ImageController.getInstance().tryGet("/p2.png");
 
     }
 
 
-    @Override
-    public void paint(Graphics g) {
-        g.drawImage(this.img, getX(), getY(), null);
-    }
+
 
     @Override
     public void update() {
 
     }
 
+    @Override
+    public void paintComponent(Graphics g) {
+
+    }
 }

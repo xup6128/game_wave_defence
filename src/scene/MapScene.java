@@ -1,9 +1,9 @@
-package scence;
+package scene;
 
-import Gameobj.GameObject;
-import Gameobj.TestObject1;
-import Gameobj.TestObject2;
-import Gameobj.TestObject3;
+import gameobj.GameObject;
+import gameobj.TestObject1;
+import gameobj.TestObject2;
+import gameobj.TestObject3;
 import maploader.MapInfo;
 import maploader.MapLoader;
 import utils.CommandSolver;
