@@ -13,7 +13,6 @@ public class Global {
         LEFT(1),
         RIGHT(2),
         NO_DIR(0);
-
         private int value;
 
         Direction(int value) {
@@ -23,7 +22,12 @@ public class Global {
         public int getValue() {
             return value;
         }
-        
+        public Direction getbyInt(int value){
+            if(this.value==value) {
+                return this;
+            }
+            return null;
+        }
         public static Direction getDirection(int value){
             for(Direction d : Direction.values()){
                 if(d.getValue() == value){

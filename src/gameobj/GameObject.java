@@ -98,6 +98,5 @@ public abstract class GameObject implements GameKernel.UpdateInterface,GameKerne
             g.setColor(Color.BLACK);
         }
     }
-
     public abstract void paintComponent(Graphics g);
 }

@@ -144,7 +144,6 @@ public class MapScene extends Scene {
                         actor.get(0).translateX(1);
                         break;
                 }
-
             }
             @Override
             public void keyReleased(int commandCode, long trigTime) {
@@ -183,6 +182,7 @@ public class MapScene extends Scene {
         strr.add(ClientClass.getInstance().getID()+"");
         strr.add(actor.get(0).collider().centerX()+"");
         strr.add(actor.get(0).collider().centerY()+"");
+        strr.add(actor.get(0).getDir()+"");
         ClientClass.getInstance().sent(Global.InternetCommand.MOVE,strr);
         ClientClass.getInstance().consume(new CommandReceiver() {
             @Override
@@ -207,10 +207,12 @@ public class MapScene extends Scene {
                         }
                         break;
                     case Global.InternetCommand.MOVE:
-                        for(int i=0;i<actor.size();i++) {
+                        for(int i=1;i<actor.size();i++) {
                             if(actor.get(i).getId()==Integer.valueOf(strs.get(0))) {
                                 System.out.println("aaaaaa");
-                               actor.get(i).collider().setCenter(Integer.valueOf(strs.get(1)),Integer.valueOf(strs.get(2)));
+                               actor.get(i).painter().setCenter(Integer.valueOf(strs.get(1)),Integer.valueOf(strs.get(2)));
+                               actor.get(i).walk(Global.Direction.getDirection(Integer.valueOf(strs.get(3))));
+                               break;
                             }
                         }
                         break;

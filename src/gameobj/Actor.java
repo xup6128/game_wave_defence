@@ -30,7 +30,9 @@ public class Actor extends GameObject{
     public void walk(Global.Direction dir){
         this.dir=dir;
     }
-
+    public int getDir(){
+        return this.dir.getValue();
+    }
     @Override
     public void paintComponent(Graphics g) {
         actorAnimal.paintComponent(g,num,painter().left(), painter().top(),painter().right(),painter().bottom(),dir);
