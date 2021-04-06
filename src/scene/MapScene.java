@@ -29,6 +29,7 @@ public class MapScene extends Scene {
         gameObjectArr = new ArrayList();
         actor=new ArrayList<>();
         actor.add(new Actor(100,100,0));
+        actor.get(0).setId(ClientClass.getInstance().getID());
         cam= new Camera.Builder(1000,1000).setChaseObj(actor.get(0),1,1)
                 .setCameraStartLocation(actor.get(0).painter().left(),actor.get(0).painter().top()).gen();
 
@@ -156,15 +157,16 @@ public class MapScene extends Scene {
         for (int i=0;i<gameObjectArr.size();i++){
             gameObjectArr.get(i).paint(g);
         }
-        for(int i=1;i<actor.size();i++){
+        for(int i=0;i<actor.size();i++){
             actor.get(i).paint(g);
         }
-        this.actor.get(0).paint(g);
+//        this.actor.get(0).paint(g); //自己決角色
         cam.end(g);
     }
 
     @Override
     public void update() {
+        System.out.println(actor.size());
         cam.update();
         for (int i=0;i<gameObjectArr.size();i++){
             if (cam.isCollision(gameObjectArr.get(i))){
@@ -176,8 +178,18 @@ public class MapScene extends Scene {
             public void receive(int serialNum, int internetcommand, ArrayList<String> strs) {
                 switch(internetcommand){
                     case Global.InternetCommand.CONNECT:
-                        actor.add(new Actor(100,100,0));
-                        actor.get(actor.size()-1).setId(serialNum);
+                        boolean isburn = false;
+                        for (int i = 0; i < actor.size(); i++) {
+                            if (actor.get(i).getId() == serialNum) {
+                                isburn = true;
+                                break;
+                            }
+                        }
+                        if(!isburn) {
+                            System.out.println("!!!!!");
+                            actor.add(new Actor(100, 100, 0));
+                            actor.get(actor.size() - 1).setId(serialNum);
+                        }
                         ArrayList<String> str=new ArrayList<>();
                         str.add(actor.get(0).collider().centerX()+""); //傳我們自己的座標出去
                         str.add(actor.get(0).collider().centerY()+"");

@@ -10,6 +10,7 @@ import utils.Global;
 
 import java.awt.*;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -67,8 +68,9 @@ public class OpenScene extends Scene {
                 ArrayList<String> str=new ArrayList<>();
                     str.add("100");
                     str.add("100");
-                    ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
                 SceneController.getInstance().changeScene(new MapScene());
+                System.out.println("!!!!!");
+                ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
                 }
             @Override
             public void keyReleased(int commandCode, long trigTime) {
