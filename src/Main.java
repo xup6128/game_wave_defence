@@ -35,7 +35,7 @@ public class Main {
                         .add(KeyEvent.VK_DOWN,Global.Direction.DOWN.getValue())
                         .add(KeyEvent.VK_X,4)
                         .add(KeyEvent.VK_SPACE,5)
-                        .add(KeyEvent.VK_ESCAPE,6)
+                        .add(KeyEvent.VK_A,6)
                         .next().subscribe(sceneController)
         ).paint(sceneController).update(sceneController).gen();
         jframe.setSize(1000,1000);

@@ -69,7 +69,6 @@ public class OpenScene extends Scene {
                     str.add("100");
                     str.add("100");
                 SceneController.getInstance().changeScene(new MapScene());
-                System.out.println("!!!!!");
                 ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
                 }
             @Override

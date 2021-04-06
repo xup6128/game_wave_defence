@@ -135,6 +135,7 @@ public class Server extends Thread {
                 ByteArrayInputStream bais = null;
                 DataInputStream dis = null;
                 try {
+                    System.out.println(disConnectDatagramSocket);
                     disConnectDatagramSocket.receive(dp);
                     bais = new ByteArrayInputStream(buf, 0, dp.getLength());
                     dis = new DataInputStream(bais);
@@ -144,7 +145,7 @@ public class Server extends Thread {
                         for (int i = 0; i < clients.size(); i++) {
                             Client c = clients.get(i);
                             if (Integer.parseInt(strarr[0]) == c.id) {//從連線中的client們找出此和斷線訊息相同id的client
-                                System.out.println("ID：" + c.id + "disconnect");
+                                System.out.println("ID：" + c.id + " disconnect");
                                 clients.remove(c);//移除此client
                                 break;
                             }
@@ -154,9 +155,8 @@ public class Server extends Thread {
                             disConnectDatagramSocket.send(dp);
                         }
                     }
-
                 } catch (IOException e) {
-                    break;
+                    e.printStackTrace();
                 } finally {
                     if (null != dis) {
                         try {
@@ -186,7 +186,6 @@ public class Server extends Thread {
         public void run() {
             try {
                 sendds = new DatagramSocket(UDP_PORT);//NEW一個埠號為UDP_PORT代表UDP協議的Socket
-
             } catch (SocketException e) {
                 e.printStackTrace();
             }

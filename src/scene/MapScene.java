@@ -93,7 +93,6 @@ public class MapScene extends Scene {
 //                System.out.println(test.get(i).getSizeX());
 //                System.out.println(test.get(i).getSizeY());
 //            }
-            this.gameObjectArr.forEach(a -> System.out.println(a.getClass().getSimpleName()));
         } catch (IOException ex) {
             Logger.getLogger(MapScene.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -129,7 +128,7 @@ public class MapScene extends Scene {
                         strs.add(String.valueOf(ClientClass.getInstance().getID()));
                         ClientClass.getInstance().sent(Global.InternetCommand.DISCONNECT,strs);
                         ClientClass.getInstance().disConnect();
-                        System.exit(0);
+//                        System.exit(0);
                     }
                 switch (dir){
                     case DOWN:
@@ -181,6 +180,7 @@ public class MapScene extends Scene {
             }
         }
         ArrayList<String> strr=new ArrayList<>();
+        strr.add(ClientClass.getInstance().getID()+"");
         strr.add(actor.get(0).collider().centerX()+"");
         strr.add(actor.get(0).collider().centerY()+"");
         ClientClass.getInstance().sent(Global.InternetCommand.MOVE,strr);
@@ -189,6 +189,7 @@ public class MapScene extends Scene {
             public void receive(int serialNum, int internetcommand, ArrayList<String> strs) {
                 switch(internetcommand){
                     case Global.InternetCommand.CONNECT:
+                        System.out.println("Connect " + serialNum);
                         boolean isburn = false;
                         for (int i = 0; i < actor.size(); i++) {
                             if (actor.get(i).getId() == serialNum) {
@@ -199,25 +200,23 @@ public class MapScene extends Scene {
                         if(!isburn) {
                             actor.add(new Actor(100, 100, 0));
                             actor.get(actor.size() - 1).setId(serialNum);
+                            ArrayList<String> str=new ArrayList<>();
+                            str.add(actor.get(0).collider().centerX()+"");
+                            str.add(actor.get(0).collider().centerY()+"");
+                            ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
                         }
-                        ArrayList<String> str=new ArrayList<>();
-                        str.add(actor.get(0).collider().centerX()+""); //傳我們自己的座標出去
-                        str.add(actor.get(0).collider().centerY()+"");
-                        ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
                         break;
                     case Global.InternetCommand.MOVE:
-                        ArrayList<String> str1=new ArrayList<>();
                         for(int i=0;i<actor.size();i++) {
-                            if(actor.get(i).getId()==serialNum) {
-                                str1.add(actor.get(0).collider().centerX() + ""); //傳我們自己的座標出去
-                                str1.add(actor.get(0).collider().centerY() + "");
-                                ClientClass.getInstance().sent(Global.InternetCommand.MOVE, str1);
+                            if(actor.get(i).getId()==Integer.valueOf(strs.get(0))) {
+                                System.out.println("aaaaaa");
+                               actor.get(i).collider().setCenter(Integer.valueOf(strs.get(1)),Integer.valueOf(strs.get(2)));
                             }
                         }
                         break;
                         case Global.InternetCommand.DISCONNECT:
                             for(int i=0;i<actor.size();i++){
-                                if(actor.get(i).getId()==serialNum){
+                                if(actor.get(i).getId()==Integer.valueOf(strs.get(0))){
                                     actor.remove(i);
                                 }
                             }
