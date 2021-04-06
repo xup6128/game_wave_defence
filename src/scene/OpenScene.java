@@ -28,7 +28,7 @@ public class OpenScene extends Scene {
 
     @Override
     public void sceneBegin() {
-        image= ImageController.getInstance().tryGet("/Actor1.png");
+        image= ImageController.getInstance().tryGet("/aa.jpg");
     }
 
     @Override
