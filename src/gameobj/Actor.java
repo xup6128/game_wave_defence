@@ -7,7 +7,8 @@ import utils.Global;
 import java.awt.*;
 
 public class Actor extends GameObject{
-    private int num;
+    private int ID;
+    private int num; //要哪一隻角色
     private ActorAnimal actorAnimal;
     private Global.Direction dir;
     public Actor(int x, int y,int num) {
@@ -16,6 +17,15 @@ public class Actor extends GameObject{
         actorAnimal=new ActorAnimal();
         dir= Global.Direction.NO_DIR;
 
+    }
+    public void setId(int id){
+        this.ID=id;
+    }
+    public int getId(){
+        return this.ID;
+    }
+    public int getNum(){
+        return this.num;
     }
     public void walk(Global.Direction dir){
         this.dir=dir;

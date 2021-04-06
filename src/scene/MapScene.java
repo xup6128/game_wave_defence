@@ -3,6 +3,7 @@ package scene;
 import camera.Camera;
 import gameobj.*;
 import internet.server.ClientClass;
+import internet.server.CommandReceiver;
 import internet.server.Server;
 import maploader.MapInfo;
 import maploader.MapLoader;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
 
 public class MapScene extends Scene {
     private Camera cam;
-    private Actor actor;
+    private ArrayList<Actor> actor;
     private Map map;
 
     private ArrayList<GameObject> gameObjectArr ;
@@ -26,9 +27,10 @@ public class MapScene extends Scene {
     public void sceneBegin() {
         map=new Map();
         gameObjectArr = new ArrayList();
-        actor=new Actor(200, 200,5);
-        cam= new Camera.Builder(1000,1000).setChaseObj(actor,1,1)
-                .setCameraStartLocation(actor.painter().left(),actor.painter().top()).gen();
+        actor=new ArrayList<>();
+        actor.add(new Actor(100,100,0));
+        cam= new Camera.Builder(1000,1000).setChaseObj(actor.get(0),1,1)
+                .setCameraStartLocation(actor.get(0).painter().left(),actor.get(0).painter().top()).gen();
 
         try {
             MapLoader mapLoader = new MapLoader("/genMap.bmp", "/genMap.txt");
@@ -112,7 +114,6 @@ public class MapScene extends Scene {
     @Override
     public CommandSolver.KeyListener keyListener() {
         return new CommandSolver.KeyListener(){
-
             @Override
             public void keyTyped(char c, long trigTime) {
 
@@ -121,19 +122,19 @@ public class MapScene extends Scene {
             @Override
             public void keyPressed(int commandCode, long trigTime) {
                 Global.Direction dir=Global.Direction.getDirection(commandCode);
-                    actor.walk(dir);
+                    actor.get(0).walk(dir);
                 switch (dir){
                     case DOWN:
-                        actor.translateY(1);
+                        actor.get(0).translateY(1);
                         break;
                     case UP:
-                        actor.translateY(-1);
+                        actor.get(0).translateY(-1);
                         break;
                     case LEFT:
-                        actor.translateX(-1);
+                        actor.get(0).translateX(-1);
                         break;
                     case RIGHT:
-                        actor.translateX(1);
+                        actor.get(0).translateX(1);
                         break;
                 }
 
@@ -155,7 +156,10 @@ public class MapScene extends Scene {
         for (int i=0;i<gameObjectArr.size();i++){
             gameObjectArr.get(i).paint(g);
         }
-        this.actor.paint(g);
+        for(int i=1;i<actor.size();i++){
+            actor.get(i).paint(g);
+        }
+        this.actor.get(0).paint(g);
         cam.end(g);
     }
 
@@ -167,7 +171,31 @@ public class MapScene extends Scene {
                 gameObjectArr.get(i).update();
             }
         }
-        this.actor.update();
-
+        ClientClass.getInstance().consume(new CommandReceiver() {
+            @Override
+            public void receive(int serialNum, int internetcommand, ArrayList<String> strs) {
+                switch(internetcommand){
+                    case Global.InternetCommand.CONNECT:
+                        actor.add(new Actor(100,100,0));
+                        actor.get(actor.size()-1).setId(serialNum);
+                        ArrayList<String> str=new ArrayList<>();
+                        str.add(actor.get(0).collider().centerX()+""); //傳我們自己的座標出去
+                        str.add(actor.get(0).collider().centerY()+"");
+                        ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
+                        break;
+                    case Global.InternetCommand.MOVE:
+                        ArrayList<String> str1=new ArrayList<>();
+                        for(int i=0;i<actor.size();i++) {
+                            if(actor.get(i).getId()==serialNum) {
+                                str1.add(actor.get(0).collider().centerX() + ""); //傳我們自己的座標出去
+                                str1.add(actor.get(0).collider().centerY() + "");
+                                ClientClass.getInstance().sent(Global.InternetCommand.MOVE, str1);
+                            }
+                        }
+                        break;
+                }
+            }
+        });
+        this.actor.get(0).update();
     }
 }

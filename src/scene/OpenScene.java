@@ -50,7 +50,6 @@ public class OpenScene extends Scene {
                         Server s=Server.instance();
                         s.create(12345);
                         s.start();
-                        SceneController.getInstance().changeScene(new MapScene());
                         try {
                             ClientClass.getInstance().connect("127.0.0.1",12345);
                         } catch (IOException e) {
@@ -69,6 +68,7 @@ public class OpenScene extends Scene {
                     str.add("100");
                     str.add("100");
                     ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
+                SceneController.getInstance().changeScene(new MapScene());
                 }
             @Override
             public void keyReleased(int commandCode, long trigTime) {
