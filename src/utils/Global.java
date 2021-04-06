@@ -1,6 +1,10 @@
 package utils;
 
 public class Global {
+    public class InternetCommand{
+        public static final int CONNECT=0;
+        public static final int MOVE=1;
+    }
 
     public enum Direction {
         UP(3),
@@ -25,11 +29,11 @@ public class Global {
                     return d;
                 }
             }
-            return null;
+            return Direction.NO_DIR;
         }
     }
 
-    public static final boolean IS_DEBUG = true;
+    public static final boolean IS_DEBUG = false;
 
     public static void log(String str) {
         if (IS_DEBUG) {

@@ -27,7 +27,7 @@ public class MapScene extends Scene {
         map=new Map();
         gameObjectArr = new ArrayList();
         actor=new Actor(200, 200,5);
-        cam= new Camera.Builder(800,600).setChaseObj(actor,1,1)
+        cam= new Camera.Builder(1000,1000).setChaseObj(actor,1,1)
                 .setCameraStartLocation(actor.painter().left(),actor.painter().top()).gen();
 
         try {
@@ -94,23 +94,21 @@ public class MapScene extends Scene {
         } catch (IOException ex) {
             Logger.getLogger(MapScene.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Server.instance().create(12345); //建立連接埠
-        Server.instance().start();
-        System.out.println(Server.instance().getLocalAddress()[0]); //印出host IP
-        try{
-            //連接("host IP:127.0.0.1", port)
-            ClientClass.getInstance().connect("127.0.0.1", 12345);
-        }catch(IOException ex){
-            Logger.getLogger(MapScene.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        Server.instance().create(12345); //建立連接埠
+//        Server.instance().start();
+//        System.out.println(Server.instance().getLocalAddress()[0]); //印出host IP
+//        try{
+////            //連接("host IP:127.0.0.1", port)
+////            ClientClass.getInstance().connect("127.0.0.1", 12345);
+//        }catch(IOException ex){
+//            Logger.getLogger(MapScene.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
     }
-
     @Override
     public void sceneEnd() {
 
     }
-
     @Override
     public CommandSolver.KeyListener keyListener() {
         return new CommandSolver.KeyListener(){
@@ -123,7 +121,7 @@ public class MapScene extends Scene {
             @Override
             public void keyPressed(int commandCode, long trigTime) {
                 Global.Direction dir=Global.Direction.getDirection(commandCode);
-                actor.walk(dir);
+                    actor.walk(dir);
                 switch (dir){
                     case DOWN:
                         actor.translateY(1);
@@ -140,7 +138,6 @@ public class MapScene extends Scene {
                 }
 
             }
-
             @Override
             public void keyReleased(int commandCode, long trigTime) {
             }
