@@ -131,9 +131,9 @@ public class Camera extends GameObject implements KeyListener{
     private void chaseMove() { //鏡頭追蹤加速度 數字越大追越慢
         double targeX = (obj.painter().centerX() - painter().centerX()) / chaseDivisorX;
         double targeY = (obj.painter().centerY() - painter().centerY()) / chaseDivisorY;
-        if (targeX > 0 && !touchRight() && !lockRight){
+        if (targeX > 0 && !touchRight()&& !lockRight ){
             translateX((int)targeX);
-        }else if (targeX < 0 && !touchLeft() && !lockLeft){
+        }else if (targeX < 0&& !touchLeft()  && !lockLeft){
             translateX((int)targeX);
         }
         if (targeY > 0 && !touchBottom() && !lockDown){

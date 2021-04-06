@@ -6,7 +6,8 @@ public class Global {
         UP(3),
         DOWN(0),
         LEFT(1),
-        RIGHT(2);
+        RIGHT(2),
+        NO_DIR(0);
 
         private int value;
 
@@ -41,6 +42,8 @@ public class Global {
     // 視窗大小
     public static final int WINDOW_WIDTH = 800;
     public static final int WINDOW_HEIGHT = 600;
+    public static final int MAP_WIDTH = 1280;
+    public static final int MAP_HEIGHT = 1280;
     public static final int SCREEN_X = WINDOW_WIDTH - 8 - 8;
     public static final int SCREEN_Y = WINDOW_HEIGHT - 31 - 8;
     // 資料刷新時間

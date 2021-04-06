@@ -1,5 +1,6 @@
 package gameobj;
 
+import camera.MapInformation;
 import utils.GameKernel;
 import utils.Global;
 
@@ -52,11 +53,11 @@ public abstract class GameObject implements GameKernel.UpdateInterface,GameKerne
     }
 
     public boolean touchRight() {
-        return collider.right() >= Global.SCREEN_X;
+        return collider.right() >= MapInformation.mapInfo().right();
     }
 
     public boolean touchBottom() {
-        return collider.bottom() >= Global.SCREEN_Y;
+        return collider.bottom() >= MapInformation.mapInfo().bottom();
     }
 
     public boolean isCollision(GameObject obj) {

@@ -113,7 +113,7 @@ public class GameKernel extends Canvas {
         }
 
         public Builder ups(final int updatesPerSec) {
-            this.updateInterface = this.updateInterface;
+            this.updateInterface = updateInterface;
             return this;
         }
 

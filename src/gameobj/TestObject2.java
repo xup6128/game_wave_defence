@@ -10,9 +10,8 @@ public class TestObject2 extends GameObject {
 
 
     public TestObject2(int x, int y) {
-        super(x, y, 44, 48);
-        this.img = ImageController.getInstance().tryGet("/p2.png");
-
+        super(x+128/2, y+128/2, 128, 128);
+        this.img = ImageController.getInstance().tryGet("/sand.png");
     }
 
 
@@ -25,6 +24,7 @@ public class TestObject2 extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
+        g.drawImage(img, painter().left(), painter().top(), null);
 
     }
 }

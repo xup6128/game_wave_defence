@@ -1,0 +1,2 @@
+grass,-10027162,C:\Users\a0920\OneDrive\桌面\戰鬥營\素材\platformer-pack-redux-360-assets-20210329T115850Z-001\platformer-pack-redux-360-assets\PNG\Ground\Grass\grass.png,1,1
+sand,-256,C:\Users\a0920\OneDrive\桌面\戰鬥營\素材\platformer-pack-redux-360-assets-20210329T115850Z-001\platformer-pack-redux-360-assets\PNG\Ground\Sand\sand.png,1,1
