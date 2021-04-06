@@ -32,7 +32,6 @@ public class MapScene extends Scene {
         actor.get(0).setId(ClientClass.getInstance().getID());
         cam= new Camera.Builder(1000,1000).setChaseObj(actor.get(0),1,1)
                 .setCameraStartLocation(actor.get(0).painter().left(),actor.get(0).painter().top()).gen();
-
         try {
             MapLoader mapLoader = new MapLoader("/genMap.bmp", "/genMap.txt");
             ArrayList<MapInfo> test = mapLoader.combineInfo();
@@ -123,12 +122,12 @@ public class MapScene extends Scene {
             public void keyPressed(int commandCode, long trigTime) {
                 Global.Direction dir=Global.Direction.getDirection(commandCode);
                     actor.get(0).walk(dir);
-                    if(commandCode==6){
+                    if(commandCode==6){  //角色斷線時發送斷線訊息
                         ArrayList<String> strs = new ArrayList<String>();
                         strs.add(String.valueOf(ClientClass.getInstance().getID()));
                         ClientClass.getInstance().sent(Global.InternetCommand.DISCONNECT,strs);
                         ClientClass.getInstance().disConnect();
-//                        System.exit(0);
+                        System.exit(0);
                     }
                 switch (dir){
                     case DOWN:
@@ -209,7 +208,6 @@ public class MapScene extends Scene {
                     case Global.InternetCommand.MOVE:
                         for(int i=1;i<actor.size();i++) {
                             if(actor.get(i).getId()==Integer.valueOf(strs.get(0))) {
-                                System.out.println("aaaaaa");
                                actor.get(i).painter().setCenter(Integer.valueOf(strs.get(1)),Integer.valueOf(strs.get(2)));
                                actor.get(i).walk(Global.Direction.getDirection(Integer.valueOf(strs.get(3))));
                                break;

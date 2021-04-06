@@ -16,7 +16,6 @@ public class Actor extends GameObject{
         this.num=num;
         actorAnimal=new ActorAnimal();
         dir= Global.Direction.NO_DIR;
-
     }
     public void setId(int id){
         this.ID=id;
@@ -24,6 +23,7 @@ public class Actor extends GameObject{
     public int getId(){
         return this.ID;
     }
+
     public int getNum(){
         return this.num;
     }
