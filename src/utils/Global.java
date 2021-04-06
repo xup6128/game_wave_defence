@@ -4,6 +4,7 @@ public class Global {
     public class InternetCommand{
         public static final int CONNECT=0;
         public static final int MOVE=1;
+        public static final int DISCONNECT=2;
     }
 
     public enum Direction {

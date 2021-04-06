@@ -124,6 +124,13 @@ public class MapScene extends Scene {
             public void keyPressed(int commandCode, long trigTime) {
                 Global.Direction dir=Global.Direction.getDirection(commandCode);
                     actor.get(0).walk(dir);
+                    if(commandCode==6){
+                        ArrayList<String> strs = new ArrayList<String>();
+                        strs.add(String.valueOf(ClientClass.getInstance().getID()));
+                        ClientClass.getInstance().sent(Global.InternetCommand.DISCONNECT,strs);
+                        ClientClass.getInstance().disConnect();
+                        System.exit(0);
+                    }
                 switch (dir){
                     case DOWN:
                         actor.get(0).translateY(1);
@@ -166,13 +173,17 @@ public class MapScene extends Scene {
 
     @Override
     public void update() {
-        System.out.println(actor.size());
+        actor.get(0).update();
         cam.update();
         for (int i=0;i<gameObjectArr.size();i++){
             if (cam.isCollision(gameObjectArr.get(i))){
                 gameObjectArr.get(i).update();
             }
         }
+        ArrayList<String> strr=new ArrayList<>();
+        strr.add(actor.get(0).collider().centerX()+"");
+        strr.add(actor.get(0).collider().centerY()+"");
+        ClientClass.getInstance().sent(Global.InternetCommand.MOVE,strr);
         ClientClass.getInstance().consume(new CommandReceiver() {
             @Override
             public void receive(int serialNum, int internetcommand, ArrayList<String> strs) {
@@ -186,7 +197,6 @@ public class MapScene extends Scene {
                             }
                         }
                         if(!isburn) {
-                            System.out.println("!!!!!");
                             actor.add(new Actor(100, 100, 0));
                             actor.get(actor.size() - 1).setId(serialNum);
                         }
@@ -205,9 +215,15 @@ public class MapScene extends Scene {
                             }
                         }
                         break;
+                        case Global.InternetCommand.DISCONNECT:
+                            for(int i=0;i<actor.size();i++){
+                                if(actor.get(i).getId()==serialNum){
+                                    actor.remove(i);
+                                }
+                            }
+                            break;
                 }
             }
         });
-        this.actor.get(0).update();
     }
 }

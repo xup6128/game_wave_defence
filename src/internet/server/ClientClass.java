@@ -205,7 +205,6 @@ public class ClientClass {
         if (socket != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream(100);//指定大小, 避免字節太大
             DataOutputStream dos = new DataOutputStream(baos);
-
             try {
                 dos.writeUTF(ID + "," + new Command(commandCode, strs).toString());//將Command及id組成資料包
             } catch (IOException ex) {
