@@ -54,7 +54,7 @@ public class Actor extends GameObject{
             img= ImageController.getInstance().tryGet("/Actor1.png");
             delay=new Delay(5);
             delay.loop();
-            dir= Global.Direction.NO_DIR;
+            dir= Global.Direction.DOWN;
         }
         public void paintComponent(Graphics g,int num,int left,int top,int right,int bottom,Global.Direction dir) {
             if (dir== Global.Direction.NO_DIR){
@@ -67,7 +67,6 @@ public class Actor extends GameObject{
             }
             int tx=num%4*Global.UNIT_X*3;
             int ty=num/4*Global.UNIT_Y*4+this.dir.getValue()*Global.UNIT_Y;
-
             g.drawImage(img,left,top,right,bottom, tx+Global.UNIT_X*ACTOR_WALK[count],
                     ty, tx+Global.UNIT_X*ACTOR_WALK[count]+Global.UNIT_X, ty+Global.UNIT_Y,null);
         }

@@ -12,7 +12,7 @@ public class Global {
         DOWN(0),
         LEFT(1),
         RIGHT(2),
-        NO_DIR(0);
+        NO_DIR(4);
         private int value;
 
         Direction(int value) {
