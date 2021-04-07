@@ -24,6 +24,9 @@ public class MapScene extends Scene {
     private int num;
 
     private ArrayList<GameObject> gameObjectArr ;
+    public MapScene(int num){
+        this.num=num;
+    }
 
     @Override
     public void sceneBegin() {
@@ -31,8 +34,10 @@ public class MapScene extends Scene {
         gameObjectArr = new ArrayList();
         actor=new ArrayList<>();
         Scanner sc = new Scanner(System.in);
-        System.out.print("輸入0~7決定角色: ");
-        this.num = sc.nextInt();
+        //______________
+        //System.out.print("輸入0~7決定角色: ");
+        //this.num = sc.nextInt();
+        //______________
         actor.add(new Actor(100,100,num));
         actor.get(0).setId(ClientClass.getInstance().getID());
         cam= new Camera.Builder(1000,1000).setChaseObj(actor.get(0),1,1)
@@ -189,9 +194,9 @@ public class MapScene extends Scene {
         strr.add(actor.get(0).getDir()+"");
         ClientClass.getInstance().sent(Global.InternetCommand.MOVE,strr);
 
-        ArrayList<String> strrr=new ArrayList<>();
+        /*ArrayList<String> strrr=new ArrayList<>();
         strrr.add(actor.get(0).getNum()+"");
-        ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,strrr);
+        ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,strrr);*/
 
         ClientClass.getInstance().consume(new CommandReceiver() {
             @Override
@@ -207,11 +212,12 @@ public class MapScene extends Scene {
                             }
                         }
                         if(!isburn) {
-                            actor.add(new Actor(100, 100, Integer.valueOf(strs.get(0))));
+                            actor.add(new Actor(100, 100, Integer.valueOf(strs.get(2))));
                             actor.get(actor.size() - 1).setId(serialNum);
                             ArrayList<String> str=new ArrayList<>();
                             str.add(actor.get(0).painter().centerX()+"");
                             str.add(actor.get(0).painter().centerY()+"");
+                            str.add(actor.get(0).getNum()+"");
                             ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
                         }
                         break;

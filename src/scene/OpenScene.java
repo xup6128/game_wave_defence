@@ -56,6 +56,8 @@ public class OpenScene extends Scene {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        System.out.println("主機IP：" + Server.instance().getLocalAddress()[0] +
+                                "\n主機PORT：" + Server.instance().getLocalAddress()[1]);
                     }else if(commandCode==5){
                         System.out.println("請輸入IP:");
                         String str=sc.next();
@@ -68,7 +70,12 @@ public class OpenScene extends Scene {
                 ArrayList<String> str=new ArrayList<>();
                     str.add("100");
                     str.add("100");
-                SceneController.getInstance().changeScene(new MapScene());
+                //______________
+                System.out.print("輸入0~7決定角色: ");
+                String num = sc.next();
+                str.add(num);
+                //______________
+                SceneController.getInstance().changeScene(new MapScene(Integer.valueOf(num)));
                 ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
                 }
             @Override
