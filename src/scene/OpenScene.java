@@ -68,8 +68,8 @@ public class OpenScene extends Scene {
                         }
                     }
                 ArrayList<String> str=new ArrayList<>();
-                    str.add("100");
-                    str.add("100");
+                    str.add("200");
+                    str.add("200");
                 //______________
                 System.out.print("輸入0~7決定角色: ");
                 String num = sc.next();
