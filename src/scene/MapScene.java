@@ -22,7 +22,7 @@ public class MapScene extends Scene {
     private ArrayList<Actor> actor;
     private Map map;
     private int num;
-
+    private ArrayList<GameObject> gameObjectArr1 ;
     private ArrayList<GameObject> gameObjectArr ;
     public MapScene(int num){
         this.num=num;
@@ -32,13 +32,14 @@ public class MapScene extends Scene {
     public void sceneBegin() {
         map=new Map();
         gameObjectArr = new ArrayList();
+        gameObjectArr1 = new ArrayList();
         actor=new ArrayList<>();
         Scanner sc = new Scanner(System.in);
         //______________
         //System.out.print("輸入0~7決定角色: ");
         //this.num = sc.nextInt();
         //______________
-        actor.add(new Actor(100,100,num));
+        actor.add(new Actor(200,200,num));
         actor.get(0).setId(ClientClass.getInstance().getID());
         cam= new Camera.Builder(1000,1000).setChaseObj(actor.get(0),1,1)
                 .setCameraStartLocation(actor.get(0).painter().left(),actor.get(0).painter().top()).gen();
@@ -102,6 +103,18 @@ public class MapScene extends Scene {
 //                System.out.println(test.get(i).getSizeX());
 //                System.out.println(test.get(i).getSizeY());
 //            }
+            this.gameObjectArr1 = mapLoader.creatObjectArray("grass", 128, test, new MapLoader.CompareClass() {
+                        @Override
+                        public GameObject compareClassName(String gameObject, String name, MapInfo mapInfo, int size) {
+                            GameObject tmp = null;
+                            if (gameObject.equals(name)) {
+                                tmp = new TestObject1(mapInfo.getX() * size, mapInfo.getY() * size);
+                                return tmp;
+                            }
+                            return null;
+                        }
+                    }
+            );
         } catch (IOException ex) {
             Logger.getLogger(MapScene.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -131,28 +144,52 @@ public class MapScene extends Scene {
             @Override
             public void keyPressed(int commandCode, long trigTime) {
                 Global.Direction dir=Global.Direction.getDirection(commandCode);
-                    actor.get(0).walk(dir);
-                    if(commandCode==6){  //角色斷線時發送斷線訊息
-                        ArrayList<String> strs = new ArrayList<String>();
-                        strs.add(String.valueOf(ClientClass.getInstance().getID()));
-                        ClientClass.getInstance().sent(Global.InternetCommand.DISCONNECT,strs);
-                        ClientClass.getInstance().disConnect();
-                        System.exit(0);
-                    }
+                for(int k=0;k<actor.size();k++){
+                    actor.get(k).walk(dir);
                 switch (dir){
                     case DOWN:
-                        actor.get(0).translateY(1);
+                        for (int i=0;i<gameObjectArr1.size();i++){
+                            if (actor.get(k).isCollision(gameObjectArr.get(i))&&
+                                    actor.get(k).bottomIsCollision(gameObjectArr.get(i))){
+                                actor.get(k).translateY(-1);
+                                break;
+                            }
+                        }
+                        actor.get(k).translateY(1);
                         break;
                     case UP:
-                        actor.get(0).translateY(-1);
+                        for (int i=0;i<gameObjectArr1.size();i++){
+                            if (actor.get(k).isCollision(gameObjectArr.get(i))&&
+                                    actor.get(k).topIsCollision(gameObjectArr.get(i))){
+                                actor.get(k).translateY(1);
+                                break;
+                            }
+                        }
+                        actor.get(k).translateY(-1);
                         break;
                     case LEFT:
-                        actor.get(0).translateX(-1);
+                        for (int i=0;i<gameObjectArr1.size();i++){
+                            if (actor.get(k).isCollision(gameObjectArr.get(i))
+                                    &&actor.get(k).leftIsCollision(gameObjectArr.get(i))){
+                                actor.get(k).translateX(1);
+                                System.out.println(gameObjectArr.get(i));
+                                break;
+                            }
+                        }
+                        actor.get(k).translateX(-1);
                         break;
                     case RIGHT:
-                        actor.get(0).translateX(1);
+                        for (int i=0;i<gameObjectArr1.size();i++){
+                            if (actor.get(k).isCollision(gameObjectArr.get(i))&&
+                                    actor.get(k).rightIsCollision(gameObjectArr.get(i))){
+                                System.out.println(gameObjectArr.get(i));
+                                actor.get(k).translateX(-1);
+                                break;
+                            }
+                        }
+                        actor.get(k).translateX(1);
                         break;
-                }
+                }}
             }
             @Override
             public void keyReleased(int commandCode, long trigTime) {
