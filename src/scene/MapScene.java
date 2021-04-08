@@ -144,7 +144,13 @@ public class MapScene extends Scene {
             @Override
             public void keyPressed(int commandCode, long trigTime) {
                 Global.Direction dir=Global.Direction.getDirection(commandCode);
-
+                if(commandCode==6){  //角色斷線時發送斷線訊息
+                    ArrayList<String> strs = new ArrayList<String>();
+                    strs.add(String.valueOf(ClientClass.getInstance().getID()));
+                    ClientClass.getInstance().sent(Global.InternetCommand.DISCONNECT,strs);
+                    ClientClass.getInstance().disConnect();
+                    System.exit(0);
+                }
                     actor.get(0).walk(dir);
                 switch (dir){
                     case DOWN:
