@@ -144,53 +144,51 @@ public class MapScene extends Scene {
             @Override
             public void keyPressed(int commandCode, long trigTime) {
                 Global.Direction dir=Global.Direction.getDirection(commandCode);
-                for(int k=0;k<actor.size();k++){
-                    actor.get(k).walk(dir);
+
+                    actor.get(0).walk(dir);
                 switch (dir){
                     case DOWN:
                         for (int i=0;i<gameObjectArr1.size();i++){
-                            if (actor.get(k).isCollision(gameObjectArr.get(i))&&
-                                    actor.get(k).bottomIsCollision(gameObjectArr.get(i))){
-                                actor.get(k).translateY(-1);
+                            if (actor.get(0).isCollision(gameObjectArr.get(i))&&
+                                    actor.get(0).bottomIsCollision(gameObjectArr.get(i))){
+                                actor.get(0).translateY(-1);
                                 break;
                             }
                         }
-                        actor.get(k).translateY(1);
+                        actor.get(0).translateY(1);
                         break;
                     case UP:
                         for (int i=0;i<gameObjectArr1.size();i++){
-                            if (actor.get(k).isCollision(gameObjectArr.get(i))&&
-                                    actor.get(k).topIsCollision(gameObjectArr.get(i))){
-                                actor.get(k).translateY(1);
+                            if (actor.get(0).isCollision(gameObjectArr.get(i))&&
+                                    actor.get(0).topIsCollision(gameObjectArr.get(i))){
+                                actor.get(0).translateY(1);
                                 break;
                             }
                         }
-                        actor.get(k).translateY(-1);
+                        actor.get(0).translateY(-1);
                         break;
                     case LEFT:
                         for (int i=0;i<gameObjectArr1.size();i++){
-                            if (actor.get(k).isCollision(gameObjectArr.get(i))
-                                    &&actor.get(k).leftIsCollision(gameObjectArr.get(i))){
-                                actor.get(k).translateX(1);
-                                System.out.println(gameObjectArr.get(i));
+                            if (actor.get(0).isCollision(gameObjectArr.get(i))
+                                    &&actor.get(0).leftIsCollision(gameObjectArr.get(i))){
+                                actor.get(0).translateX(1);
                                 break;
                             }
                         }
-                        actor.get(k).translateX(-1);
+                        actor.get(0).translateX(-1);
                         break;
                     case RIGHT:
                         for (int i=0;i<gameObjectArr1.size();i++){
-                            if (actor.get(k).isCollision(gameObjectArr.get(i))&&
-                                    actor.get(k).rightIsCollision(gameObjectArr.get(i))){
-                                System.out.println(gameObjectArr.get(i));
-                                actor.get(k).translateX(-1);
+                            if (actor.get(0).isCollision(gameObjectArr.get(i))&&
+                                    actor.get(0).rightIsCollision(gameObjectArr.get(i))){
+                                actor.get(0).translateX(-1);
                                 break;
                             }
                         }
-                        actor.get(k).translateX(1);
+                        actor.get(0).translateX(1);
                         break;
                 }}
-            }
+
             @Override
             public void keyReleased(int commandCode, long trigTime) {
             }
