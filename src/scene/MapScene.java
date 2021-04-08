@@ -214,6 +214,7 @@ public class MapScene extends Scene {
         }
         for(int i=0;i<actor.size();i++){
             actor.get(i).paint(g);
+            System.out.println(actor.size());
         }
 //        this.actor.get(0).paint(g); //自己決角色
         cam.end(g);
@@ -253,7 +254,8 @@ public class MapScene extends Scene {
                             }
                         }
                         if(!isburn) {
-                            actor.add(new Actor(200, 200, Integer.valueOf(strs.get(2))));
+                            actor.add(new Actor(Integer.valueOf(strs.get(0)),Integer.valueOf(strs.get(1)), Integer.valueOf(strs.get(2))));
+                            System.out.println("!!!!!!!!!!!!!!!!!!!!");
                             actor.get(actor.size() - 1).setId(serialNum);
                             ArrayList<String> str=new ArrayList<>();
                             str.add(actor.get(0).painter().centerX()+"");
