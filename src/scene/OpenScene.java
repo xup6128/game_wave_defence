@@ -82,7 +82,6 @@ public class OpenScene extends Scene {
             public void keyReleased(int commandCode, long trigTime) {
 
             }
-
             @Override
             public void keyTyped(char c, long trigTime) {
 

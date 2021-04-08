@@ -253,7 +253,7 @@ public class MapScene extends Scene {
                             }
                         }
                         if(!isburn) {
-                            actor.add(new Actor(100, 100, Integer.valueOf(strs.get(2))));
+                            actor.add(new Actor(200, 200, Integer.valueOf(strs.get(2))));
                             actor.get(actor.size() - 1).setId(serialNum);
                             ArrayList<String> str=new ArrayList<>();
                             str.add(actor.get(0).painter().centerX()+"");
