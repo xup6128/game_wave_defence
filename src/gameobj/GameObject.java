@@ -44,6 +44,7 @@ public abstract class GameObject implements GameKernel.UpdateInterface,GameKerne
         return painter.top() >= Global.SCREEN_Y;
     }
 
+
     public boolean touchTop() {
         return collider.top() <= 0;
     }

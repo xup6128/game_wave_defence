@@ -24,8 +24,7 @@ public class MapScene extends Scene {
     private int num;
     private ArrayList<GameObject> gameObjectArr1 ;
     private ArrayList<GameObject> gameObjectArr ;
-    public MapScene(int num){
-        this.num=num;
+    public MapScene(){
     }
 
     @Override
@@ -39,7 +38,14 @@ public class MapScene extends Scene {
         //System.out.print("輸入0~7決定角色: ");
         //this.num = sc.nextInt();
         //______________
-        actor.add(new Actor(200,200,num));
+        ArrayList<String> str=new ArrayList<>();
+        str.add("200");
+        str.add("200");
+        System.out.print("輸入0~7決定角色: ");
+        int num = sc.nextInt();
+        str.add(num+"");
+        actor.add(new Actor(Integer.valueOf(str.get(0)),Integer.valueOf(str.get(1)),num));
+        ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
         actor.get(0).setId(ClientClass.getInstance().getID());
         cam= new Camera.Builder(1000,1000).setChaseObj(actor.get(0),1,1)
                 .setCameraStartLocation(actor.get(0).painter().left(),actor.get(0).painter().top()).gen();
