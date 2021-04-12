@@ -62,13 +62,14 @@ public abstract class GameObject implements GameKernel.UpdateInterface,GameKerne
     }
 
     public boolean isCollision(GameObject obj) {
-        return collider.overlap(obj.collider);
+        return  collider.overlap(obj.collider);
     }
+
     public boolean topIsCollision(GameObject obj) {
-        return collider.left()<obj.collider.right() &&
-                obj.collider.bottom()<=collider.top()&&
-                obj.collider.top()<collider.bottom()&&
-                obj.collider.left()<collider.right();
+        return collider.top()<=obj.collider.bottom() &&
+                obj.collider.left()<collider.right()&&
+                obj.collider.right()>collider.left()&&
+                obj.collider.top()<collider.bottom();
     }
     public boolean leftIsCollision(GameObject obj) {
         return collider.left()<=obj.collider.right() &&
@@ -83,12 +84,11 @@ public abstract class GameObject implements GameKernel.UpdateInterface,GameKerne
                 obj.collider.right()>collider.right();
     }
     public boolean bottomIsCollision(GameObject obj) {
-        return collider.left()<obj.collider.right() &&
-                obj.collider.bottom()>collider.top()&&
-                obj.collider.top()>=collider.bottom()&&
-                obj.collider.left()<collider.right();
+        return collider.bottom()>=obj.collider.top() &&
+                obj.collider.left()<collider.right()&&
+                obj.collider.right()>collider.left()&&
+                obj.collider.bottom()>collider.top();
     }
-
     public final void translate(int x, int y) {
         collider.translate(x, y);
         painter.translate(x, y);
@@ -107,7 +107,6 @@ public abstract class GameObject implements GameKernel.UpdateInterface,GameKerne
     public final Rect collider() {
         return collider;
     }
-
     public final Rect painter() {
         return painter;
     }

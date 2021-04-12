@@ -6,7 +6,6 @@ public class Global {
         public static final int MOVE=1;
         public static final int DISCONNECT=2;
     }
-
     public enum Direction {
         UP(3),
         DOWN(0),
@@ -31,9 +30,7 @@ public class Global {
             return Direction.NO_DIR;
         }
     }
-
-    public static final boolean IS_DEBUG = false;
-
+    public static final boolean IS_DEBUG = true;
     public static void log(String str) {
         if (IS_DEBUG) {
             System.out.println(str);

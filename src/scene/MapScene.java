@@ -44,7 +44,7 @@ public class MapScene extends Scene {
         System.out.print("輸入0~7決定角色: ");
         int num = sc.nextInt();
         str.add(num+"");
-        actor.add(new Actor(Integer.valueOf(str.get(0)),Integer.valueOf(str.get(1)),num));
+        actor.add(new Actor(Integer.parseInt(str.get(0)),Integer.parseInt(str.get(1)),num));
         ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);
         actor.get(0).setId(ClientClass.getInstance().getID());
         cam= new Camera.Builder(1000,1000).setChaseObj(actor.get(0),1,1)
@@ -139,73 +139,7 @@ public class MapScene extends Scene {
     public void sceneEnd() {
 
     }
-    @Override
-    public CommandSolver.KeyListener keyListener() {
-        return new CommandSolver.KeyListener(){
-            @Override
-            public void keyTyped(char c, long trigTime) {
 
-            }
-
-            @Override
-            public void keyPressed(int commandCode, long trigTime) {
-                Global.Direction dir=Global.Direction.getDirection(commandCode);
-                if(commandCode==6){  //角色斷線時發送斷線訊息
-                    ArrayList<String> strs = new ArrayList<String>();
-                    strs.add(String.valueOf(ClientClass.getInstance().getID()));
-                    ClientClass.getInstance().sent(Global.InternetCommand.DISCONNECT,strs);
-                    ClientClass.getInstance().disConnect();
-                    System.exit(0);
-                }
-                    actor.get(0).walk(dir);
-                switch (dir){
-                    case DOWN:
-                        for (int i=0;i<gameObjectArr1.size();i++){
-                            if (actor.get(0).isCollision(gameObjectArr.get(i))&&
-                                    actor.get(0).bottomIsCollision(gameObjectArr.get(i))){
-                                actor.get(0).translateY(-1);
-                                break;
-                            }
-                        }
-                        actor.get(0).translateY(1);
-                        break;
-                    case UP:
-                        for (int i=0;i<gameObjectArr1.size();i++){
-                            if (actor.get(0).isCollision(gameObjectArr.get(i))&&
-                                    actor.get(0).topIsCollision(gameObjectArr.get(i))){
-                                actor.get(0).translateY(1);
-                                break;
-                            }
-                        }
-                        actor.get(0).translateY(-1);
-                        break;
-                    case LEFT:
-                        for (int i=0;i<gameObjectArr1.size();i++){
-                            if (actor.get(0).isCollision(gameObjectArr.get(i))
-                                    &&actor.get(0).leftIsCollision(gameObjectArr.get(i))){
-                                actor.get(0).translateX(1);
-                                break;
-                            }
-                        }
-                        actor.get(0).translateX(-1);
-                        break;
-                    case RIGHT:
-                        for (int i=0;i<gameObjectArr1.size();i++){
-                            if (actor.get(0).isCollision(gameObjectArr.get(i))&&
-                                    actor.get(0).rightIsCollision(gameObjectArr.get(i))){
-                                actor.get(0).translateX(-1);
-                                break;
-                            }
-                        }
-                        actor.get(0).translateX(1);
-                        break;
-                }}
-
-            @Override
-            public void keyReleased(int commandCode, long trigTime) {
-            }
-        };
-    }
 
     @Override
     public CommandSolver.MouseListener mouseListener() {
@@ -220,7 +154,7 @@ public class MapScene extends Scene {
         }
         for(int i=0;i<actor.size();i++){
             actor.get(i).paint(g);
-            System.out.println(actor.size());
+            //System.out.println(actor.size());
         }
 //        this.actor.get(0).paint(g); //自己決角色
         cam.end(g);
@@ -260,7 +194,7 @@ public class MapScene extends Scene {
                             }
                         }
                         if(!isburn) {
-                            actor.add(new Actor(Integer.valueOf(strs.get(0)),Integer.valueOf(strs.get(1)), Integer.valueOf(strs.get(2))));
+                            actor.add(new Actor(Integer.parseInt(strs.get(0)),Integer.parseInt(strs.get(1)), Integer.parseInt(strs.get(2))));
                             System.out.println("!!!!!!!!!!!!!!!!!!!!");
                             actor.get(actor.size() - 1).setId(serialNum);
                             ArrayList<String> str=new ArrayList<>();
@@ -272,22 +206,121 @@ public class MapScene extends Scene {
                         break;
                     case Global.InternetCommand.MOVE:
                         for(int i=1;i<actor.size();i++) {
-                            if(actor.get(i).getId()==Integer.valueOf(strs.get(0))) {
-                               actor.get(i).painter().setCenter(Integer.valueOf(strs.get(1)),Integer.valueOf(strs.get(2)));
-                               actor.get(i).walk(Global.Direction.getDirection(Integer.valueOf(strs.get(3))));
+                            if(actor.get(i).getId()==Integer.parseInt(strs.get(0))) {
+                               actor.get(i).painter().setCenter(Integer.parseInt(strs.get(1)),Integer.parseInt(strs.get(2)));
+                                actor.get(i).collider().setCenter(Integer.parseInt(strs.get(1)),Integer.parseInt(strs.get(2)));
+                               actor.get(i).walk(Global.Direction.getDirection(Integer.parseInt(strs.get(3))));
                                break;
                             }
                         }
                         break;
-                        case Global.InternetCommand.DISCONNECT:
-                            for(int i=0;i<actor.size();i++){
-                                if(actor.get(i).getId()==Integer.valueOf(strs.get(0))){
-                                    actor.remove(i);
-                                }
+                    case Global.InternetCommand.DISCONNECT:
+                        for(int i=0;i<actor.size();i++){
+                            if(actor.get(i).getId()==Integer.parseInt(strs.get(0))){
+                               actor.remove(i);
+                               i--;
+                               break;
+
                             }
-                            break;
+                        }
+                        break;
                 }
             }
         });
+    }
+    @Override
+    public CommandSolver.KeyListener keyListener() {
+        return new CommandSolver.KeyListener(){
+            @Override
+            public void keyTyped(char c, long trigTime) {
+
+            }
+            public void keyPressed(int commandCode, long trigTime) {
+                Global.Direction dir=Global.Direction.getDirection(commandCode);
+                if(commandCode==6){  //角色斷線時發送斷線訊息
+                    ArrayList<String> strs = new ArrayList<String>();
+                    strs.add(String.valueOf(ClientClass.getInstance().getID()));
+                    ClientClass.getInstance().sent(Global.InternetCommand.DISCONNECT,strs);
+                    ClientClass.getInstance().disConnect();
+                    System.exit(0);
+                }
+                actor.get(0).walk(dir);
+                switch (dir){
+                    case DOWN:
+                        for (int i=0;i<gameObjectArr1.size();i++){
+                            if (actor.get(0).isCollision(gameObjectArr.get(i))&&
+                                    actor.get(0).bottomIsCollision(gameObjectArr.get(i))){
+                                actor.get(0).translateY(-1);
+                                break;
+                            }
+                        }
+                        for (int i=1;i<actor.size();i++){
+                            System.out.println(actor.get(i));
+                            if (actor.get(0).isCollision(actor.get(i))&&
+                                    actor.get(0).bottomIsCollision(actor.get(i))){
+                                System.out.println("DDD");
+                                actor.get(0).translateY(-1);
+                                break;
+                            }
+                        }
+                        actor.get(0).translateY(1);
+                        break;
+                    case UP:
+                        for (int i=0;i<gameObjectArr1.size();i++){
+                            if (actor.get(0).isCollision(gameObjectArr.get(i))&&
+                                    actor.get(0).topIsCollision(gameObjectArr.get(i))){
+                                actor.get(0).translateY(1);
+                                break;
+                            }
+                        }
+                        for (int i=1;i<actor.size();i++){
+                            if (actor.get(0).isCollision(actor.get(i))&&
+                                    actor.get(0).topIsCollision(actor.get(i))){
+                                actor.get(0).translateY(1);
+                                break;
+                            }
+                        }
+                        actor.get(0).translateY(-1);
+                        break;
+                    case LEFT:
+                        for (int i=0;i<gameObjectArr1.size();i++){
+                            if (actor.get(0).isCollision(gameObjectArr.get(i))
+                                    &&actor.get(0).leftIsCollision(gameObjectArr.get(i))){
+                                actor.get(0).translateX(1);
+                                break;
+                            }
+                        }
+                        for (int i=1;i<actor.size();i++){
+                            if (actor.get(0).isCollision(actor.get(i))
+                                    &&actor.get(0).leftIsCollision(actor.get(i))){
+                                actor.get(0).translateX(1);
+                                break;
+                            }
+                        }
+                        actor.get(0).translateX(-1);
+                        break;
+                    case RIGHT:
+                        for (int i=0;i<gameObjectArr1.size();i++){
+                            if (actor.get(0).isCollision(gameObjectArr.get(i))&&
+                                    actor.get(0).rightIsCollision(gameObjectArr.get(i))){
+                                actor.get(0).translateX(-1);
+                                break;
+                            }
+                        }
+                        for (int i=1;i<actor.size();i++){
+                            if (actor.get(0).isCollision(actor.get(i))&&
+                                    actor.get(0).rightIsCollision(actor.get(i))){
+                                actor.get(0).translateX(-1);
+                                break;
+                            }
+                        }
+                        actor.get(0).translateX(1);
+                        break;
+                }}
+
+            @Override
+            public void keyReleased(int commandCode, long trigTime) {
+            }
+        };
     }
 }
