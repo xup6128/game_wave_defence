@@ -2,7 +2,7 @@
 
 GameKernel使用建造者模式來創建
 
-### 1-1 GameKernel的Builder有五個設定初始化的方法:
+### 1-1 五個設定初始化的方法:
 
 ```java
 		//分別為:
@@ -1338,8 +1338,6 @@ sent方法會將指令封裝並傳送。
 
 ####  10-3-1連線設置及基礎設置
 
-##### 1.連線設置
-
 ```java
 //在 首頁場景中 的keyListener()實作 建立伺服器
         public void keyPressed(int commandCode, long trigTime) {
@@ -1358,8 +1356,6 @@ sent方法會將指令封裝並傳送。
                 }
         }
 ```
-
-
 
 ```java
 //在 首頁場景中 的keyListener()實作 連線設置
@@ -1380,11 +1376,9 @@ sent方法會將指令封裝並傳送。
 }
 ```
 
-##### 2.設置ID屬性
-
-​    由於Server類會為每位加入的玩家配發一組ID，此範例我們在玩家控制的角色加入ID屬性，接收伺服器配發的ID以**標示玩家**。
-
 ```java
+//設置ID屬性
+//由於Server類會為每位加入的玩家配發一組ID，此範例我們在玩家控制的角色加入ID屬性，接收伺服器配發的ID以標示玩家。
 public class Actor extends GameObject{
     private int ID;//增加ID屬性，接收連線時伺服器發送的ID
     //其他屬性略...
@@ -1403,15 +1397,12 @@ public class Actor extends GameObject{
 }
 ```
 
-
-
 #### 10-3-2傳送和接收訊息
 
-##### 1.加入Actor的集合
-
-如此才可以在有別人加進來時，將他的角色加入到自己的ArrayList中，並出現在場景。
+(1)為傳送和接收訊息做基礎設置
 
 ```java
+//1.加入Actor的集合，如此才可以在有別人加進來時，將他的角色加入到自己的ArrayList中，並出現在場景。
 //在遊戲主場景中加入角色集合，
 public class MapScene extends Scene {
   	
@@ -1433,13 +1424,8 @@ public class MapScene extends Scene {
 
 
 
-##### 2.設置InternetCommand
-
-​	可以在Global中設置InternetCommand，目前需求為連接玩家並看的見移動，然後離開時會斷線。
-
-​	所以設置三個指令CONNECT  MOVE  DISCONNECT。將來有更多邏輯時，要視需求擴充，例如射擊遊戲就會有SHOT指令。
-
 ```java
+//2.設置InternetCommand
 //可以在Global中設置連線指令，如下
 public class Global {
     public class InternetCommand{ 
@@ -1450,17 +1436,10 @@ public class Global {
 }
 ```
 
-
-
-##### 3.指令的傳送和接收
-
-​      主要兩個步驟: 1.發送自己角色的訊息  2.接收並解析別人角色的連接 移動 斷線等訊息
-
-##### - 發送訊息
-
-(1)**在update中發送自己的ID 中心點座標x y 移動方向**
+(2)發送訊息
 
 ```java
+//1.指令的傳送
 //於主場景的update發送自己的相關訊息
 @Override
     public void update() {
@@ -1476,9 +1455,8 @@ public class Global {
 
 
 
-(2)在鍵盤監聽中發送斷線訊息:
-
 ```java
+//2.在鍵盤監聽中發送斷線訊息:
 //在主場景的keyListener()發送斷線訊息
 @Override
 public CommandSolver.KeyListener keyListener() {
@@ -1498,7 +1476,7 @@ public CommandSolver.KeyListener keyListener() {
             }
 ```
 
-##### - 接收訊息
+(3)接收訊息
 
 接收並解析別人角色的連接 移動 斷線等訊息。這部分將會很長，藉由ClinetClass中的consume方法，就可以依據我們在Global中設置的InternetCommand，搭配switchCase來設定三種狀態下要解析的外來訊息。
 
@@ -1557,7 +1535,7 @@ public void update() {
 }
 ```
 
-##### 4. 最後的主場景繪製
+(4) 最後的主場景繪製
 
 ```java
 //	記得在paint中把大家的角色都畫出來
