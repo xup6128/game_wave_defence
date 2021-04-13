@@ -1185,10 +1185,10 @@ System.out.println("主機IP：" + Server.instance().getLocalAddress()[0] + "\n�
 
 - 備註:啟用Server者，ip可以使用127.0.0.1來連接。
 
-#### 10-2-2傳送指令**:使用**ClientClass**中的**sent方法**
+#### 10-2-2傳送指令
 
 ```java
-// commandCode 為指令編號
+// 使用ClientClass中的sent方法。commandCode 為指令編號
  // strs 為指令內容
  sent(int commandCode, ArrayList<String> strs)
 ```
@@ -1240,13 +1240,14 @@ sent方法會將指令封裝並傳送。
    sent(int commandCode, ArrayList<String> strs)
   ```
 
-#### 10-2-3**接收指令**:透過ClientClass中的**consume**(CommandReceiver cr)方法
+#### 10-2-3**接收指令**
 
 在遊戲中的update中使用consume方法接收訊息封包，根據收到的ID,指令編號,參數，去執行相對應的動作(由我們自己撰寫邏輯)。
 
 - 使用範例:
 
   ```java
+  //使用ClientClass中的consume(CommandReceiver cr)方法
   public void update() {
            // 消費指令
            ClientClass.getInstance().consume((int serialNum, int commandCode, ArrayList<String> strs1) -> {
@@ -1303,7 +1304,7 @@ sent方法會將指令封裝並傳送。
     "100,1,x,y"
   ```
 
-#### 10-2-4ClientClass有的方法
+#### 10-2-4ClientClass方法列表
 
 | connect(String ip, int port)                  | 連線至指定ip,port之server                                    |
 | :-------------------------------------------- | :----------------------------------------------------------- |
@@ -1320,25 +1321,102 @@ sent方法會將指令封裝並傳送。
 
 ​                  2.多人連線後，可以看見各自的角色行走。
 
-####  10-3-1首頁的連線設置和基礎設置
+####  10-3-1連線設置及基礎設置
 
-#### 1.在OpenScene設置創立伺服器 或 連接伺服器
+#### 1.連線設置
 
-![img](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e50df0d1-b1c7-4645-942b-3d3ce48b3e11/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210411%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210411T120649Z&X-Amz-Expires=86400&X-Amz-Signature=27fb9bd52b7009037f60f233a67f5b819e108348f34c498840852d5a5c99cf18&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+```java
+//在 首頁場景中 的keyListener()實作 建立伺服器
+        public void keyPressed(int commandCode, long trigTime) {
+            Scanner sc=new Scanner(System.in);
+                if ( commandCode == 0) { //建立伺服器
+                    Server s=Server.instance(); //取得Server實體
+                    s.create(12345); //建立伺服器，並可帶入port號當參數
+                    s.start(); //啟動伺服器
+                    try {
+                        ClientClass.getInstance().connect("127.0.0.1",12345); //連接自己的伺服器
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("主機IP：" + Server.instance().getLocalAddress()[0] +  //印出主伺服器的資訊
+                            "\n主機PORT：" + Server.instance().getLocalAddress()[1]);
+                }
+        }
+```
 
-#### 2.為Actor加入ID屬性
+
+
+```java
+//在 首頁場景中 的keyListener()實作 連線設置
+        public void keyPressed(int commandCode, long trigTime) {
+            Scanner sc=new Scanner(System.in);
+          if(commandCode==5){  //連接伺服器
+                    System.out.println("請輸入IP:"); 
+                    String str=sc.next();
+                    try {
+                        ClientClass.getInstance().connect(str,12345); //連接伺服器
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            ArrayList<String> str=new ArrayList<>();
+            SceneController.getInstance().changeScene(new MapScene());//觸發換場
+    };
+}
+```
+
+#### 2.設置ID屬性
 
 ​    由於Server類會為每位加入的玩家配發一組ID，此範例我們在玩家控制的角色加入ID屬性，接收伺服器配發的ID以**標示玩家**。
 
-![img](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/6a07dcb2-5d54-407a-9d46-57033e8dafd2/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210411%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210411T120922Z&X-Amz-Expires=86400&X-Amz-Signature=ee70d360fb426ba53f62e8d2ce3bffc67fff89948f14238816eee144f2a5a5f4&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+```java
+public class Actor extends GameObject{
+    private int ID;//增加ID屬性，接收連線時伺服器發送的ID
+    //其他屬性略...
+ 
+    public Actor(int x, int y,int num) {
+       //建構子略
+    }
+    //增加設置和取得Id的方法
+    public void setId(int id){ 
+        this.ID=id;
+    }
+    public int getId(){
+        return this.ID;
+    }
+	//其他方法略
+}
+```
 
-#### 10-3-2遊戲主場景的設置-傳送和接收訊息
 
-#### 1.在遊戲場景中加入Actor的集合
+
+#### 10-3-2傳送和接收訊息
+
+#### 1.加入Actor的集合
 
 如此才可以在有別人加進來時，將他的角色加入到自己的ArrayList中，並出現在場景。
 
-![img](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/4ee2d64a-c973-4bdb-b72f-945b9f4d456e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210411%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210411T124725Z&X-Amz-Expires=86400&X-Amz-Signature=62cc2aa7de279dc3ed2c9706ff704c8a4d5dbb2758f509cdf0ab756e8770f147&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+```java
+//在遊戲主場景中加入角色集合，
+public class MapScene extends Scene {
+  	
+    private ArrayList<Actor> actor; //增加角色集合，如此才可以在有別人加進來時，將他人的角色加入到自己的ArrayList中，並出現在場景。
+    
+    public MapScene(){
+    }
+    
+    @Override
+    public void sceneBegin() { //開場時記得給角色設置ID
+        actor=new ArrayList<>();
+        actor.add(new Actor(Integer.parseInt(str.get(0)),Integer.parseInt(str.get(1)),num));
+        ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str); //記得要傳送自己的座標位置等資訊!
+        actor.get(0).setId(ClientClass.getInstance().getID());  //為自己的角色設置ID(自己的角色都會是集合中的第一個)。
+        //其他略
+    }
+}
+```
+
+
 
 #### 2.設置InternetCommand
 
@@ -1346,9 +1424,20 @@ sent方法會將指令封裝並傳送。
 
 ​	所以設置三個指令CONNECT  MOVE  DISCONNECT。將來有更多邏輯時，要視需求擴充，例如射擊遊戲就會有SHOT指令。
 
-![img](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/82e4d88a-656e-4814-87fa-8b7def3b019b/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210411%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210411T124910Z&X-Amz-Expires=86400&X-Amz-Signature=145b1a4ac9c8f4770a89cbef57d25c904a5a4eceaff08430804a0d2343eb6f60&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+```java
+//可以在Global中設置連線指令，如下
+public class Global {
+    public class InternetCommand{ 
+        public static final int CONNECT=0; //連線的指令碼
+        public static final int MOVE=1; //移動的指令碼
+        public static final int DISCONNECT=2; //斷線的指令碼
+    }
+}
+```
 
-#### 3.主場景中傳送和接收指令
+
+
+#### 3.指令的傳送和接收
 
 ​      主要兩個步驟: 1.發送自己角色的訊息  2.接收並解析別人角色的連接 移動 斷線等訊息
 
@@ -1356,39 +1445,114 @@ sent方法會將指令封裝並傳送。
 
 (1)**在update中發送自己的ID 中心點座標x y 移動方向**
 
-![img](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/cdc2133c-2b4d-4e65-9bde-050d7a5e5a41/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210411%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210411T125251Z&X-Amz-Expires=86400&X-Amz-Signature=a596b246ec9494ffe09b0f6c0feb32ade27d4822f6490c33474854dbb55416cf&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+```java
+//於主場景的update發送自己的相關訊息
+@Override
+    public void update() {
+        actor.get(0).update();
+        ArrayList<String> strr=new ArrayList<>(); //儲存訊息封包的集合
+        strr.add(ClientClass.getInstance().getID()+""); //打包ID訊息
+        strr.add(actor.get(0).painter().centerX()+"");//打包角色座標x
+        strr.add(actor.get(0).painter().centerY()+"");//打包角色座標y
+        strr.add(actor.get(0).getDir()+""); //打包角色方向
+        ClientClass.getInstance().sent(Global.InternetCommand.MOVE,strr); //sent方法傳送資訊
+    }
+```
+
+
 
 (2)在鍵盤監聽中發送斷線訊息:
 
-![img](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2b301437-abd0-4e76-bfba-2bb618b413bc/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210411%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210411T125353Z&X-Amz-Expires=86400&X-Amz-Signature=75af75d2a8e28572540adf1aa6157e4cd1db890ef39c49e35e6f70361c882497&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+```java
+//在主場景的keyListener()發送斷線訊息
+@Override
+public CommandSolver.KeyListener keyListener() {
+    return new CommandSolver.KeyListener(){
+        @Override
+        public void keyTyped(char c, long trigTime) {
+			
+        }
+        public void keyPressed(int commandCode, long trigTime) {
+            Global.Direction dir=Global.Direction.getDirection(commandCode);
+            if(commandCode==6){  //角色斷線時發送斷線訊息
+                ArrayList<String> strs = new ArrayList<String>(); //儲存訊息封包的集合
+                strs.add(String.valueOf(ClientClass.getInstance().getID())); //打包ID
+                ClientClass.getInstance().sent(Global.InternetCommand.DISCONNECT,strs); //傳送封包
+                ClientClass.getInstance().disConnect(); //斷開伺服器連結
+                System.exit(0); //結束程式
+            }
+```
 
 ##### - 接收訊息
 
 接收並解析別人角色的連接 移動 斷線等訊息。這部分將會很長，藉由ClinetClass中的consume方法，就可以依據我們在Global中設置的InternetCommand，搭配switchCase來設定三種狀態下要解析的外來訊息。
 
-(1)完成CONNCENT指令的處理邏輯
-
-![img](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/f1ad289c-b4c6-46e8-b683-cd402ae48ebd/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210411%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210411T125620Z&X-Amz-Expires=86400&X-Amz-Signature=aabf7223a48c3fcb6d5f4925e188db08f989f81e42aea6d7b73ced698936adea&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
-
-​           ps.您現在的位置在update中的consume中的receive匿名內部類中的switch case中。
-
-(2)完成MOVE指令的處理邏輯
-
-![img](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/a0495572-c9d7-4226-95c2-7f2938edce55/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210411%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210411T125646Z&X-Amz-Expires=86400&X-Amz-Signature=f66e1da6990b38bd74f7c05efda65b23704ee25aeacffd074d24e4da4c63155e&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
-
-(3)完成DISCONNECT的處理邏輯
-
-接收到有人斷線的訊息時，就從我們的Actor陣列中比對ID，移除該Actor。
-
-![img](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/76d9a5b9-e040-43f5-a4f9-9b0c37c42620/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210411%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210411T125659Z&X-Amz-Expires=86400&X-Amz-Signature=bc4a8306fffa112cb416eddda20f682ac985849de9db74215f120f9956424280&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+```java
+//在主場的update中處理訊息封包，並做出相應動作
+@Override
+public void update() {
+    //傳送自己訊息的方法見發送訊息段...以上略
+	//使用consume方法解析封包，並執行相應動作
+    ClientClass.getInstance().consume(new CommandReceiver() {
+        @Override
+        public void receive(int serialNum, int internetcommand, ArrayList<String> strs) {
+            switch(internetcommand){
+                case Global.InternetCommand.CONNECT: //(1)完成CONNCENT指令的處理邏輯
+                    System.out.println("Connect " + serialNum); //serialNum即客戶的ID
+                    boolean isburn = false;
+                    for (int i = 0; i < actor.size(); i++) { 
+                        if (actor.get(i).getId() == serialNum) {
+                            isburn = true; //避免已經加入過的玩家被加入角色陣列
+                            break;
+                        }
+                    }
+                    if(!isburn) { //將新進的玩家，加入自己的角色陣列中
+                        actor.add(new Actor(Integer.parseInt(strs.get(0)),Integer.parseInt(strs.get(1)), 				
+　　　　　　　　　　　　　　　							Integer.parseInt(strs.get(2))));
+                        actor.get(actor.size() - 1).setId(serialNum);
+                        ArrayList<String> str=new ArrayList<>(); 
+                        str.add(actor.get(0).painter().centerX()+"");
+                        str.add(actor.get(0).painter().centerY()+"");
+                        str.add(actor.get(0).getNum()+"");
+                        ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,str);//並傳送自己的資訊給所有人
+                    }
+                    break;
+                case Global.InternetCommand.MOVE: //(2)完成MOVE指令的處理邏輯
+                    for(int i=1;i<actor.size();i++) {
+                        if(actor.get(i).getId()==Integer.parseInt(strs.get(0))) {
+                           actor.get(i).painter().setCenter(Integer.parseInt(strs.get(1)),Integer.parseInt(strs.get(2)));
+                            actor.get(i).collider().setCenter(Integer.parseInt(strs.get(1)),Integer.parseInt(strs.get(2)));
+                           actor.get(i).walk(Global.Direction.getDirection(Integer.parseInt(strs.get(3))));
+                           break;
+                        }
+                    }
+                    break;
+                case Global.InternetCommand.DISCONNECT: //(3)完成DISCONNENT的處理邏輯
+                    for(int i=0;i<actor.size();i++){ //接收到有人斷現的訊息時，就從我們的Actor陣列中比對ID，移除該Actor
+                        if(actor.get(i).getId()==Integer.parseInt(strs.get(0))){
+                           actor.remove(i);
+                           i--;
+                           break;
+                        }
+                    }
+                    break;
+            }
+        }
+    });
+}
+```
 
 #### 4. 最後的主場景繪製
 
-​		記得在paint中把大家的角色都畫出來
-
-![img](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/752024c4-0a1f-441e-8c52-1ded2ecb33af/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210411%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210411T125801Z&X-Amz-Expires=86400&X-Amz-Signature=f0546718177bf5c0dd77c845736acb53fa243b5a1582ef8793e5833171b15922&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
-
-
+```java
+//	記得在paint中把大家的角色都畫出來
+ @Override
+    public void paint(Graphics g) {
+        for(int i=0;i<actor.size();i++){
+            actor.get(i).paint(g);
+        }
+    }
+```
 
 # 
 
