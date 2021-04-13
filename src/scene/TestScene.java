@@ -33,10 +33,6 @@ public class TestScene extends Scene {
         gameObjectArr1 = new ArrayList();
         actor=new ArrayList<>();
         Scanner sc = new Scanner(System.in);
-        //______________
-        //System.out.print("輸入0~7決定角色: ");
-        //this.num = sc.nextInt();
-        //______________
         ArrayList<String> str=new ArrayList<>();
         str.add("200");
         str.add("200");
@@ -63,51 +59,7 @@ public class TestScene extends Scene {
                         }
                     }
             );
-            this.gameObjectArr.addAll(mapLoader.creatObjectArray("sand", 128, test, new MapLoader.CompareClass() {
-                        @Override
-                        public GameObject compareClassName(String gameObject, String name, MapInfo mapInfo, int size) {
-                            GameObject tmp = null;
-                            if (gameObject.equals(name)) {
-                                tmp = new TestObject2(mapInfo.getX() * size, mapInfo.getY() * size);
-                                return tmp;
-                            }
-                            return null;
-                        }
-                    }
-            ));
-            /*this.gameObjectArr.addAll(mapLoader.creatObjectArray("P3", 32, test, new MapLoader.CompareClass() {
-                        @Override
-                        public GameObject compareClassName(String gameObject, String name, MapInfo mapInfo, int size) {
-                            GameObject tmp = null;
-                            if (gameObject.equals(name)) {
-                                tmp = new TestObject3(mapInfo.getX() * size, mapInfo.getY() * size);
-                                return tmp;
-                            }
-                            return null;
-                        }
-                    }
-                    )
-            );
-            this.gameObjectArr.addAll(mapLoader.creatObjectArray("P3", 32, test, new MapLoader.CompareClass() {
-                        @Override
-                        public GameObject compareClassName(String gameObject, String name, MapInfo mapInfo, int size) {
-                            GameObject tmp = null;
-                            if (gameObject.equals(name)) {
-                                tmp = new TestObject3(mapInfo.getX() * size, mapInfo.getY() * size);
-                                return tmp;
-                            }
-                            return null;
-                        }
-                    }
-                    )
-            );*/
-//            for (int i = 0; i < test.size(); i++) {    //  這邊可以看array內容  {String name ,int x, int y, int xSize, int ySize}
-//                System.out.println(test.get(i).getName());
-//                System.out.println(test.get(i).getX());
-//                System.out.println(test.get(i).getY());
-//                System.out.println(test.get(i).getSizeX());
-//                System.out.println(test.get(i).getSizeY());
-//            }
+
             this.gameObjectArr1 = mapLoader.creatObjectArray("grass", 128, test, new MapLoader.CompareClass() {
                         @Override
                         public GameObject compareClassName(String gameObject, String name, MapInfo mapInfo, int size) {
@@ -123,15 +75,6 @@ public class TestScene extends Scene {
         } catch (IOException ex) {
             Logger.getLogger(TestScene.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        Server.instance().create(12345); //建立連接埠
-//        Server.instance().start();
-//        System.out.println(Server.instance().getLocalAddress()[0]); //印出host IP
-//        try{
-////            //連接("host IP:127.0.0.1", port)
-////            ClientClass.getInstance().connect("127.0.0.1", 12345);
-//        }catch(IOException ex){
-//            Logger.getLogger(MapScene.class.getName()).log(Level.SEVERE, null, ex);
-//        }
 
     }
     @Override
@@ -153,9 +96,7 @@ public class TestScene extends Scene {
         }
         for(int i=0;i<actor.size();i++){
             actor.get(i).paint(g);
-            //System.out.println(actor.size());
         }
-//        this.actor.get(0).paint(g); //自己決角色
         cam.end(g);
     }
 
@@ -175,24 +116,20 @@ public class TestScene extends Scene {
         strr.add(actor.get(0).getDir()+"");
         ClientClass.getInstance().sent(Global.InternetCommand.MOVE,strr);
 
-        /*ArrayList<String> strrr=new ArrayList<>();
-        strrr.add(actor.get(0).getNum()+"");
-        ClientClass.getInstance().sent(Global.InternetCommand.CONNECT,strrr);*/
-
         ClientClass.getInstance().consume(new CommandReceiver() {
             @Override
             public void receive(int serialNum, int internetcommand, ArrayList<String> strs) {
                 switch(internetcommand){
                     case Global.InternetCommand.CONNECT:
                         System.out.println("Connect " + serialNum);
-                        boolean isburn = false;
+                        boolean isborn = false;
                         for (int i = 0; i < actor.size(); i++) {
                             if (actor.get(i).getId() == serialNum) {
-                                isburn = true;
+                                isborn = true;
                                 break;
                             }
                         }
-                        if(!isburn) {
+                        if(!isborn) {
                             actor.add(new Actor(Integer.parseInt(strs.get(0)),Integer.parseInt(strs.get(1)), Integer.parseInt(strs.get(2))));
                             System.out.println("!!!!!!!!!!!!!!!!!!!!");
                             actor.get(actor.size() - 1).setId(serialNum);

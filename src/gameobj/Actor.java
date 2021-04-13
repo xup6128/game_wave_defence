@@ -9,12 +9,12 @@ import java.awt.*;
 public class Actor extends GameObject{
     private int ID;
     private int num; //要哪一隻角色
-    private ActorAnimal actorAnimal;
+    private ActorAnimator actorAnimator;
     private Global.Direction dir;
     public Actor(int x, int y,int num) {
         super(x+Global.UNIT_X/2, y+Global.UNIT_Y/2, Global.UNIT_X, Global.UNIT_Y);
         this.num=num;
-        actorAnimal=new ActorAnimal();
+        actorAnimator=new ActorAnimator();
         dir= Global.Direction.NO_DIR;
     }
     public void setId(int id){
@@ -35,7 +35,7 @@ public class Actor extends GameObject{
     }
     @Override
     public void paintComponent(Graphics g) {
-        actorAnimal.paintComponent(g,num,painter().left(), painter().top(),painter().right(),painter().bottom(),dir);
+        actorAnimator.paintComponent(g,num,painter().left(), painter().top(),painter().right(),painter().bottom(),dir);
         dir= Global.Direction.NO_DIR;
     }
 
@@ -43,14 +43,14 @@ public class Actor extends GameObject{
     public void update() {
 
     }
-    private static class ActorAnimal{
+    private static class ActorAnimator{
         private int count;
         private Delay delay;
         private Image img;
         private static final int[] ACTOR_WALK={0,1,2,1};
         private Global.Direction dir;
 
-        private ActorAnimal(){
+        private ActorAnimator(){
             img= ImageController.getInstance().tryGet("/Actor1.png");
             delay=new Delay(5);
             delay.loop();

@@ -27,7 +27,6 @@ public class Main {
         JFrame jframe=new JFrame();
         jframe.setSize(1000,1000);
         jframe.setTitle("打飛機遊戲");
-        jframe.setVisible(true);
         jframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //設置關閉時結束程式
 
         //取得單例模式的控場實體
@@ -48,9 +47,9 @@ public class Main {
                         .next().subscribe(sceneController)
         ).paint(sceneController).update(sceneController).gen();
 
-        //將遊戲核心加入視窗
+        //將遊戲核心加入視窗，並將視窗顯示
         jframe.add(gameKernel);
-
+        jframe.setVisible(true);
         //遊戲核心啟動
         gameKernel.run();
     }
