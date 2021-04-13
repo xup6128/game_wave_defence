@@ -1,12 +1,18 @@
 # 1 GameKernel
 
+
+
 遊戲主核心，用來處理遊戲邏輯運算和繪圖
 
 內含兩個介面:繪圖介面和新介面
 
 需使用建造者模式來創建
 
-### 1-1 設定初始化的五個方法
+
+
+## 1-1 設定初始化的五個方法
+
+
 
 | 方法名稱 | 功能說明                       |
 | :------- | :----------------------------- |
@@ -16,14 +22,22 @@
 | ups()    | 傳入int，設定ups               |
 | input()  | 傳入CommandSolver              |
 
-### 1-2 GameKernel產生的方法
+
+
+## 1-2 GameKernel產生的方法
+
+
 
 ```java
 //使用gen方法產生遊戲核心物件
 GameKernel gameKernel = new GameKernel.Builder().gen();  //gen方法用在最後產生遊戲核心物件
 ```
 
-### 1-3 實際使用範例
+
+
+## 1-3 實際使用範例
+
+
 
 範例需求: 
 				1.遊戲核心要有input功能(以在遊戲場景中監聽鍵盤和滑鼠)
@@ -41,15 +55,27 @@ GameKernel gameKernel = new GameKernel.Builder()			 //使用建造者模式對�
 															//初始化paint和update介面，最後gen產生遊戲核心物件
 ```
 
+
+
 # 2 CommandSolver
+
+
 
 統一監聽**滑鼠**和**鍵盤**的工具。
 
+
+
 ## 2-1 使用方式
+
+
 
 CommandSolver使用建造者模式創建物件。所以在使用時要使用其內部類**BuildStream**。
 
+
+
 ## 2-2 監聽滑鼠-mouseTrack()
+
+
 
 假如要在某個場景中監聽滑鼠，使用範例如下:
 
@@ -62,7 +88,11 @@ GameKernel gameKernel = new GameKernel.Builder().input(  //在GameKernel的input
         ).paint(sceneController).update(sceneController).gen();
 ```
 
+
+
 ## 2-3 監聽鍵盤-keyboardTrack()
+
+
 
 注意，keyboardTrack()後要接一個next()後再訂閱場景。
 
@@ -75,7 +105,9 @@ GameKernel gameKernel = new GameKernel.Builder().input(  //在GameKernel的input
         ).paint(sceneController).update(sceneController).gen();
 ```
 
-#### 2-3-1加入鍵盤按鍵設定
+
+
+### 2-3-1加入鍵盤按鍵設定
 
 使用keyboardTrack()的**add方法**，就可以設置按鍵對應的指令碼，操作範例如下:
 
@@ -91,7 +123,7 @@ GameKernel gameKernel = new GameKernel.Builder().input(  //在GameKernel的input
                     			).paint(sceneController).update(sceneController).gen();
 ```
 
-#### 2-3-2按鍵指令碼的使用方式
+### 2-3-2按鍵指令碼的使用方式
 
 例如要設置按下Enter後，程式會做出反應:
 
@@ -123,7 +155,7 @@ GameKernel gameKernel = new GameKernel.Builder().input(  //在GameKernel的input
 
 # 3 GameObject
 
-## 2-1 Actor繼承抽象類別GameObject
+## 2-1 Actor繼承GameObject
 
 1. 創建類別並繼承GameObject 。
 
