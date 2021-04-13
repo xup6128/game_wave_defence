@@ -4,7 +4,6 @@ import camera.Camera;
 import gameobj.*;
 import internet.server.ClientClass;
 import internet.server.CommandReceiver;
-import internet.server.Server;
 import maploader.MapInfo;
 import maploader.MapLoader;
 import utils.CommandSolver;
@@ -17,14 +16,14 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MapScene extends Scene {
+public class TestScene extends Scene {
     private Camera cam;
     private ArrayList<Actor> actor;
     private Map map;
     private int num;
     private ArrayList<GameObject> gameObjectArr1 ;
     private ArrayList<GameObject> gameObjectArr ;
-    public MapScene(){
+    public TestScene(){
     }
 
     @Override
@@ -122,7 +121,7 @@ public class MapScene extends Scene {
                     }
             );
         } catch (IOException ex) {
-            Logger.getLogger(MapScene.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TestScene.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        Server.instance().create(12345); //建立連接埠
 //        Server.instance().start();

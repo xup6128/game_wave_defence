@@ -1,16 +1,13 @@
 package scene;
 
-import camera.Camera;
 import controllers.ImageController;
 import controllers.SceneController;
 import internet.server.ClientClass;
 import internet.server.Server;
 import utils.CommandSolver;
-import utils.Global;
 
 import java.awt.*;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -71,7 +68,7 @@ public class OpenScene extends Scene {
                 //______________
 
                 //______________
-                SceneController.getInstance().changeScene(new MapScene());
+                SceneController.getInstance().changeScene(new TestScene());
 
                 }
             @Override
