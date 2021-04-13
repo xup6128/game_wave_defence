@@ -675,6 +675,21 @@ SceneController sceneController=SceneController.getInstance(); //取得單例模
 
 # 6 Delay
 
+這個類別的目的是當我們希望物件的動作延遲時使用，比如說我們不會希望人物每秒走60步，此時就可以用delay延遲走路的動作。
+
+| function              | 功能                                         |
+| --------------------- | -------------------------------------------- |
+| Delay(int countLimit) | Delay的建構子，參數放delay的次數             |
+| stop()                | 結束delay                                    |
+| play()                | delay只進行一次，例如爆炸特效的delay只有一次 |
+| loop()                | delay每次結束，會再開始，例如人物走路的delay |
+| pause()               | delay暫停，例如遊戲需暫停的時候              |
+| isStop()              | 回傳delay是否停止的boolean值                 |
+| isPlaying()           | 回傳delay是否進行的boolean值                 |
+| isPause()             | 回傳delay是否暫停的boolean值                 |
+| count()               | delay計算，並回傳是否delay完成的boolean值    |
+
+
 ```java
 public class Delay {
     private int count; //計時器，計算當下經過的幀數
