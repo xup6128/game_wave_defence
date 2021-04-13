@@ -790,9 +790,9 @@ private ActorAnimal(){
 | 靜態常數 | public static final int WINDOW_HEIGHT;<br />public static final boolean IS_DEBUG = true; | 將常數設在global以減少記憶體消耗。<br />藉由設定boolean IS_DEBUG來開啟或關閉debug模式。 |
 | 靜態方法 | public static int random(int min, int max) {}                | 將常用統一的方法設在global以減少記憶體消耗。                 |
 
-## 7-1 Code範例
+## 7-2 Code範例
 
-Global中的 InternetCommand:
+InternetCommand:
 
 ```java
 public class Global {
@@ -824,7 +824,7 @@ ClientClass.getInstance().consume(new CommandReceiver() {
         }
 ```
 
-Global中的 Direction:
+Direction:
 
 ```java
 public class Global {
@@ -858,8 +858,6 @@ public class Global {
 ```
 
 isDebug:
-
-藉由設定IS_DEBUG = true 可以得到各個物件的painter框，以利debug。
 
 ```java
 public class Global {
