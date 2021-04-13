@@ -1,46 +1,29 @@
 # 1 GameKernel
 
-GameKernel使用建造者模式來創建
+遊戲主核心，用來處理遊戲邏輯運算和繪圖
 
-### 1-1 五個設定初始化的方法:
+內含兩個介面:繪圖介面和新介面
 
-```java
-		//分別為:
-		public Builder paint(final PaintInterface paintInterface) { //可以傳入paint介面，設置paint介面
-            this.paintInterface = paintInterface;
-            return this;
-        }
+需使用建造者模式來創建
 
-        public Builder update(final UpdateInterface updateInterface) { //可以傳入update介面，設置update介面
-            this.updateInterface = updateInterface;
-            return this;
-        }
+### 1-1 設定初始化的五個方法
 
-        public Builder fps(final int framePerSec) { //可以傳入fps，設定fps
-            this.framePerSec = framePerSec;
-            return this;
-        }
+| 方法名稱 | 功能說明                       |
+| :------- | :----------------------------- |
+| paint()  | 傳入paint介面，設置paint介面   |
+| update() | 傳入update介面，設置update介面 |
+| fps      | 傳入int，設定fps               |
+| ups()    | 傳入int，設定ups               |
+| input()  | 傳入CommandSolver              |
 
-        public Builder ups(final int updatesPerSec) { //可以傳入ups，設定ups
-            this.updateInterface = updateInterface;
-            return this;
-        }
-
-        public Builder input(final CommandSolver.BuildStream buildStream) { //可以傳入CommandSolver
-            this.buildStream = buildStream;
-            return this;
-        }
-		//使用方式詳見範例
-```
-
-### 1-2 產生GameKernel的方法-gen()
+### 1-2 GameKernel產生的方法
 
 ```java
 //使用gen方法產生遊戲核心物件
 GameKernel gameKernel = new GameKernel.Builder().gen();  //gen方法用在最後產生遊戲核心物件
 ```
 
-### 1-3 實際使用範例:
+### 1-3 實際使用範例
 
 範例需求: 
 				1.遊戲核心要有input功能(以在遊戲場景中監聽鍵盤和滑鼠)
@@ -49,15 +32,18 @@ GameKernel gameKernel = new GameKernel.Builder().gen();  //gen方法用在最後
 
 ```java
 //創建遊戲核心    
-GameKernel gameKernel = new GameKernel.Builder().     //使用建造者模式對遊戲核心進行初始化
-   		input( new CommandSolver.BuildStream().mouseTrack().subscribe(sceneController).  //input傳入CommandSolver的滑鼠和鍵盤監聽
-                   keyboardTrack().next().subscribe(sceneController)
-            ).paint(sceneController).update(sceneController).gen();  //初始化paint和update介面，最後gen產生遊戲核心物件
+GameKernel gameKernel = new GameKernel.Builder()			 //使用建造者模式對遊戲核心進行初始化
+				.input( new CommandSolver.BuildStream()		//input傳入CommandSolver的滑鼠和鍵盤監聽
+				.mouseTrack().subscribe(sceneController)
+				.keyboardTrack().next().subscribe(sceneController)
+             )     
+    			.paint(sceneController).update(sceneController).gen();  
+															//初始化paint和update介面，最後gen產生遊戲核心物件
 ```
 
 # 2 CommandSolver
 
-可以用來監聽滑鼠和鍵盤的工具。
+統一監聽**滑鼠**和**鍵盤**的工具。
 
 ## 2-1 使用方式
 
@@ -94,13 +80,15 @@ GameKernel gameKernel = new GameKernel.Builder().input(  //在GameKernel的input
 使用keyboardTrack()的**add方法**，就可以設置按鍵對應的指令碼，操作範例如下:
 
 ```java
-//例如，設置Enter鍵的指令為1
+//例如，設置Enter鍵的指令為0
 GameKernel gameKernel = new GameKernel.Builder().input(  //在GameKernel的input中
 				//使用CommandSolver.BuildStream()的keyboardTrack()
-                new CommandSolver.BuildStream().keyboardTrack().add(KeyEvent.VK_ENTER, 0) //設置ENTER按鍵為 -1
-                        .next().subscribe(sceneController)                                //add方法參數包含:
-																						   //1.從KeyEvent中選擇對應的電腦按鍵
-        ).paint(sceneController).update(sceneController).gen();                            //2.自定義對應的commandCode
+                			new CommandSolver.BuildStream().keyboardTrack()
+    							.add(KeyEvent.VK_ENTER, 0) 					//add方法參數包含:
+                                                        					//1.從KeyEvent中選擇對應的電腦按鍵
+    																		//2.自定義對應的commandCode
+                        		.next().subscribe(sceneController)			
+                    			).paint(sceneController).update(sceneController).gen();
 ```
 
 #### 2-3-2按鍵指令碼的使用方式
@@ -114,7 +102,8 @@ GameKernel gameKernel = new GameKernel.Builder().input(  //在GameKernel的input
             @Override
             public void keyPressed(int commandCode, long trigTime) { //當按下鍵盤按鍵時
                 Scanner sc=new Scanner(System.in);
-                    if ( commandCode == 0) {  //我們前面將Enter按鍵的commandCode設置為0，因此按下Enter按鍵後就會傳出指令代碼0
+                	//我們前面將Enter按鍵的commandCode設置為0，因此按下Enter按鍵後就會傳出指令代碼0
+                    if ( commandCode == 0) {
                        //以下自行撰寫實現的邏輯
                     }
                 }
@@ -134,7 +123,7 @@ GameKernel gameKernel = new GameKernel.Builder().input(  //在GameKernel的input
 
 # 3 GameObject
 
-## 2-1 角色繼承抽象類別GameObject
+## 2-1 Actor繼承抽象類別GameObject
 
 1. 創建類別並繼承GameObject 。
 
@@ -142,9 +131,8 @@ GameKernel gameKernel = new GameKernel.Builder().input(  //在GameKernel的input
    public class Actor extends GameObject {
    
    }
-   
    ```
-
+   
 2. 並繼承父類別的建構子(選擇其中一個繼承即可)。
 
 ```java
